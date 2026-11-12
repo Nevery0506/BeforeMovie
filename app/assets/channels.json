@@ -1,0 +1,21 @@
+{
+  "_설명": "공식 예고편으로 인정할 유튜브 채널 이름 목록입니다. 채널 이름이 아래 이름과 같으면 '공식'으로 표시합니다(대소문자·띄어쓰기 무시). 8자 이상인 긴 이름은 채널 이름에 포함만 되어도 인정합니다. 필요한 채널을 자유롭게 추가하세요.",
+  "korean": [
+    "워너브러더스 코리아", "Warner Bros. Korea", "유니버설 픽쳐스", "Universal Pictures Korea",
+    "소니 픽쳐스 코리아", "Sony Pictures Korea", "소니픽쳐스", "월트디즈니 컴퍼니 코리아", "디즈니 코리아", "Disney Korea",
+    "마블 코리아", "Marvel Korea", "20세기 스튜디오 코리아", "롯데엔터테인먼트", "LOTTE ENTERTAINMENT",
+    "CJ ENM Movie", "CJ ENM", "쇼박스", "SHOWBOX", "NEW", "넥스트엔터테인먼트월드", "플러스엠", "plusM",
+    "에이스메이커", "ACEMAKER", "메가박스중앙", "넷플릭스 코리아", "Netflix Korea", "파라마운트 코리아",
+    "판씨네마", "찬란", "그린나래미디어", "엣나인필름", "at9film", "영화사 진진", "미디어캐슬", "바이포엠",
+    "더쿱", "와이드릴리즈", "스튜디오 디에이치엘", "TCO더콘텐츠온", "콘텐츠판다", "KT알파", "키다리스튜디오",
+    "애니플러스", "대원미디어", "Apple TV", "Prime Video Korea", "쿠팡플레이", "TVING", "wavve"
+  ],
+  "global": [
+    "Warner Bros.", "Universal Pictures", "Sony Pictures Entertainment", "Sony Pictures", "Marvel Entertainment",
+    "Walt Disney Studios", "Disney", "Pixar", "Paramount Pictures", "20th Century Studios", "Searchlight Pictures",
+    "Lionsgate", "A24", "NEON", "Netflix", "Apple TV", "Amazon MGM Studios", "Prime Video", "MGM", "Focus Features",
+    "DreamWorks", "Illumination", "Legendary", "StudioCanal", "STUDIOCANAL", "Toho", "東宝MOVIE", "Aniplex",
+    "アニプレックス", "Studio Ghibli", "GKIDS", "Crunchyroll", "Bleecker Street", "IFC Films", "Magnolia Pictures",
+    "Sony Pictures Classics", "Warner Bros. Pictures", "HBO", "Max", "DC"
+  ]
+}

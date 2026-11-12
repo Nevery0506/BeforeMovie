@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data:; style-src 'self' 'unsafe-inline'; media-src 'self' file: blob:; img-src 'self' file: data: https:; connect-src 'self' wss: ws:; worker-src 'self' blob:">
+<title>프리쇼 세팅</title>
+<link rel="stylesheet" href="fonts/black-han-sans/index.css">
+<link rel="stylesheet" href="fonts/bebas-neue/index.css">
+<link rel="stylesheet" href="fonts/noto-sans-kr/400.css">
+<link rel="stylesheet" href="fonts/noto-sans-kr/500.css">
+<link rel="stylesheet" href="fonts/noto-sans-kr/700.css">
+<link rel="stylesheet" href="fonts/noto-sans-kr/900.css">
+<link rel="stylesheet" href="setup.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><i class="dot"></i><span>프리쇼 세팅</span><small id="ver"></small></div>
+  <div class="status" id="status"></div>
+  <button type="button" class="btn outline hide" id="btnUpdateTop">새 버전 업데이트</button>
+  <button type="button" class="btn ghost" id="btnSettings">설정</button>
+</header>
+
+<main class="cols">
+  <!-- 1. 영화 검색 -->
+  <section class="left">
+    <label class="lbl" for="q">상영할 영화 검색</label>
+    <form class="search" id="searchForm">
+      <input id="q" type="text" placeholder="영화 제목을 입력하세요" autocomplete="off">
+      <button type="submit" class="btn primary">검색</button>
+    </form>
+    <div class="hint" id="searchHint">제목을 검색하면 포스터·줄거리·평점을 자동으로 가져옵니다.</div>
+    <div class="results" id="results"></div>
+    <button type="button" class="btn ghost wide" id="btnManual">영화 정보 직접 입력</button>
+  </section>
+
+  <!-- 2. 영화 정보와 예고편 -->
+  <section class="center" id="center">
+    <div class="empty" id="empty">
+      <div class="num big">SELECT A MOVIE</div>
+      <div>왼쪽에서 영화를 검색해 선택하세요.</div>
+    </div>
+    <div id="detail" class="hide">
+      <div class="movie">
+        <div class="poster" id="mPoster"><span>포스터 없음</span></div>
+        <div class="minfo">
+          <div class="mtitle disp" id="mTitle"></div>
+          <div class="msub" id="mSub"></div>
+          <div class="chips" id="mChips"></div>
+          <div class="mcredit" id="mCredit"></div>
+          <div class="mplot" id="mPlot"></div>
+          <div><button type="button" class="btn ghost small" id="btnEdit">정보 수정</button></div>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2>예고편</h2>
+        <span class="hint">공식 채널 · 한글자막 · 1080p 우선으로 자동 선택합니다. 여러 개를 고르면 번갈아 재생합니다.</span>
+      </div>
+      <div class="note hide" id="trailerNote"></div>
+      <div class="tlist" id="tlist"></div>
+      <div class="more">
+        <div class="more-text">
+          <b>원하는 예고편이 없나요?</b>
+          <span>다른 사람이 올린 영상을 검색해 직접 고르거나, 영상 주소·PC의 파일을 지정할 수 있습니다.</span>
+        </div>
+        <form class="more-row" id="tSearchForm">
+          <input id="tq" type="text" aria-label="예고편 검색어" placeholder="검색어 (예: 영화제목 예고편)">
+          <button type="submit" class="btn outline">영상 검색</button>
+        </form>
+        <form class="more-row" id="tUrlForm">
+          <input id="turl" type="text" aria-label="영상 주소" placeholder="영상 주소 붙여넣기 (유튜브 등)">
+          <button type="submit" class="btn ghost">주소로 추가</button>
+          <button type="button" class="btn ghost" id="btnTFile">PC 파일 선택</button>
+        </form>
+      </div>
+      <video id="preview" class="hide" controls></video>
+    </div>
+  </section>
+
+  <!-- 3. 상영 설정 -->
+  <section class="right">
+    <h2>상영 설정</h2>
+    <div class="field">
+      <label class="lbl" for="ott">OTT 주소 (상영 시각에 Chrome으로 열립니다)</label>
+      <input id="ott" type="text" placeholder="https://…">
+      <div class="hint" id="ottHint">Chrome에 미리 OTT 로그인을 해 두세요.</div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label class="lbl" for="start">영화 상영 시각</label>
+        <input id="start" type="time" step="1" class="time">
+      </div>
+      <div class="field">
+        <label class="lbl" for="disp">출력 화면</label>
+        <select id="disp"></select>
+      </div>
+    </div>
+    <div class="quick">
+      <button type="button" class="btn ghost small" data-min="5">5분 뒤</button>
+      <button type="button" class="btn ghost small" data-min="10">10분 뒤</button>
+      <button type="button" class="btn ghost small" data-min="15">15분 뒤</button>
+      <button type="button" class="btn ghost small" data-min="30">30분 뒤</button>
+      <span class="hint" id="startHint"></span>
+    </div>
+    <div class="field">
+      <label class="lbl" for="theme">화면 테마 (장르에 맞춰 자동 선택)</label>
+      <select id="theme">
+        <option value="default">기본 · 드라마/기타 (버건디·골드)</option>
+        <option value="sf">SF / 판타지 (우주)</option>
+        <option value="horror">공포 / 스릴러 (붉은 안개)</option>
+        <option value="romance">로맨스 / 멜로 (빛망울·꽃잎)</option>
+        <option value="action">액션 / 범죄 (속도선·불씨)</option>
+      </select>
+    </div>
+    <div class="field">
+      <div class="lbl">점검</div>
+      <div class="checks" id="checks"></div>
+    </div>
+    <div class="field">
+      <div class="lbl">진행 순서</div>
+      <div class="tl"><i style="flex:2"></i><i class="d" style="flex:5"></i><i style="flex:2"></i><i class="d" style="flex:5"></i><i class="w" style="flex:1"></i><i class="g" style="flex:2"></i></div>
+      <div class="steps">
+        <div><span id="stepInfo">정보 화면 50초 ↔ 예고편 반복</span><em>시작 ~ 1분 5초 전</em></div>
+        <div><span>정보 화면으로 복귀</span><em>1분 5초 전</em></div>
+        <div><span>안내방송 + 자막</span><em>1분 전</em></div>
+        <div><span>효과음 카운트다운</span><em>10초 전</em></div>
+        <div><span>Chrome으로 OTT 열기</span><em>상영 시각</em></div>
+      </div>
+    </div>
+    <div class="grow"></div>
+    <div class="msg hide" id="startMsg"></div>
+    <div class="actions">
+      <button type="button" class="btn ghost big" id="btnRehearsal">리허설<small>약 2분</small></button>
+      <button type="button" class="btn primary big grow" id="btnStart">전체화면으로 시작</button>
+    </div>
+  </section>
+</main>
+
+<!-- 설정 창 -->
+<div class="modal hide" id="modalSettings">
+  <div class="sheet">
+    <h2>설정</h2>
+    <div class="field">
+      <label class="lbl" for="sKey">TMDB API 키 (영화 정보 자동 조회에 필요 · 무료)</label>
+      <input id="sKey" type="text" placeholder="API 키 또는 API 읽기 액세스 토큰">
+      <div class="hint">themoviedb.org에 가입한 뒤 [설정 → API]에서 발급받습니다. <button type="button" class="link" id="btnKeyHelp">발급 페이지 열기</button></div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label class="lbl" for="sInfo">정보 화면 표시 시간(초)</label>
+        <input id="sInfo" type="number" min="10" max="600">
+      </div>
+      <div class="field">
+        <label class="lbl" for="sVol">예고편 음량(%)</label>
+        <input id="sVol" type="number" min="0" max="100">
+      </div>
+    </div>
+    <label class="check"><input type="checkbox" id="sCut"> 남은 시간이 예고편보다 짧아도 재생하고, 1분 5초 전에 끊고 돌아오기</label>
+    <label class="check"><input type="checkbox" id="sF11"> OTT 창이 뜨는 즉시 자동으로 전체화면으로 만들기</label>
+    <label class="check"><input type="checkbox" id="sReduce"> 효과 줄이기 (오래된 PC에서 화면이 버벅일 때)</label>
+    <label class="check"><input type="checkbox" id="sFlicker"> 공포 테마의 화면 깜빡임 사용</label>
+    <label class="check"><input type="checkbox" id="sPosterLight"> 포스터 색에 맞춘 조명 (배경 빛을 영화마다 다르게)</label>
+    <label class="check"><input type="checkbox" id="sAmbOff"> 예고편 엠비언트 라이트 끄기 (영상 색이 주변으로 번지는 빛)</label>
+    <div class="field">
+      <label class="lbl" for="sAmbLevel">엠비언트 라이트 세기</label>
+      <select id="sAmbLevel"><option value="low">약하게</option><option value="mid">보통</option><option value="high">강하게</option></select>
+    </div>
+    <div class="field">
+      <div class="lbl">프로그램 업데이트</div>
+      <div class="more-row"><button type="button" class="btn ghost" id="btnUpdate">업데이트 확인</button><span class="hint" id="updMsg">인터넷에서 새 버전을 확인합니다. 설정과 내려받은 실행 파일은 그대로 둡니다.</span></div>
+    </div>
+    <div class="field">
+      <div class="lbl">휴대전화 리모컨</div>
+      <label class="check"><input type="checkbox" id="sRemote"> 휴대전화로 원격 조종 사용 (인터넷 필요)</label>
+      <label class="lbl" for="sRemotePw" style="margin-top:10px">리모컨 비밀번호 (8자 이상 · 리모컨에도 같은 값을 입력)</label>
+      <input id="sRemotePw" type="text" autocomplete="off" placeholder="남이 짐작하기 어려운 긴 문구">
+      <div class="hint" id="remoteMsg">비밀번호를 아는 사람은 누구나 조종할 수 있으니 길게 정하세요.</div>
+    </div>
+    <div class="field">
+      <div class="lbl">예고편 다운로드 도구</div>
+      <div class="more-row"><button type="button" class="btn ghost" id="btnUpdateTool">최신 버전으로 업데이트</button><span class="hint" id="toolMsg">다운로드가 갑자기 안 될 때 눌러 주세요.</span></div>
+    </div>
+    <div class="actions end">
+      <button type="button" class="btn ghost" id="btnSettingsCancel">취소</button>
+      <button type="button" class="btn primary" id="btnSettingsSave">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 영화 정보 직접 입력/수정 창 -->
+<div class="modal hide" id="modalEdit">
+  <div class="sheet wide">
+    <h2>영화 정보</h2>
+    <div class="row2">
+      <div class="field"><label class="lbl" for="eTitle">제목</label><input id="eTitle" type="text"></div>
+      <div class="field"><label class="lbl" for="eOrig">원제 (선택)</label><input id="eOrig" type="text"></div>
+    </div>
+    <div class="row4">
+      <div class="field"><label class="lbl" for="eYear">개봉 연도</label><input id="eYear" type="text"></div>
+      <div class="field"><label class="lbl" for="eRuntime">상영 시간(분)</label><input id="eRuntime" type="number" min="0"></div>
+      <div class="field"><label class="lbl" for="eRating">평점 (0~10)</label><input id="eRating" type="number" min="0" max="10" step="0.1"></div>
+      <div class="field"><label class="lbl" for="eCert">관람 등급</label><input id="eCert" type="text" placeholder="12세 이상 관람가"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label class="lbl" for="eGenres">장르 (쉼표로 구분)</label><input id="eGenres" type="text" placeholder="SF, 드라마"></div>
+      <div class="field"><label class="lbl" for="eDirector">감독</label><input id="eDirector" type="text"></div>
+    </div>
+    <div class="field"><label class="lbl" for="eCast">출연 (쉼표로 구분)</label><input id="eCast" type="text"></div>
+    <div class="field"><label class="lbl" for="ePlot">줄거리</label><textarea id="ePlot" rows="4"></textarea></div>
+    <div class="more-row"><button type="button" class="btn ghost" id="btnPoster">포스터 이미지 선택</button><span class="hint" id="ePosterName"></span></div>
+    <div class="actions end">
+      <button type="button" class="btn ghost" id="btnEditCancel">취소</button>
+      <button type="button" class="btn primary" id="btnEditSave">확인</button>
+    </div>
+  </div>
+</div>
+
+<script src="mqtt.min.js"></script>
+<script src="relay.js"></script>
+<script src="setup.js"></script>
+</body>
+</html>

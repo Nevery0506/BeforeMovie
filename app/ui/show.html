@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data:; style-src 'self' 'unsafe-inline'; media-src 'self' file: blob:; img-src 'self' file: data: https:">
+<title>프리쇼 상영 화면</title>
+<link rel="stylesheet" href="fonts/black-han-sans/index.css">
+<link rel="stylesheet" href="fonts/bebas-neue/index.css">
+<link rel="stylesheet" href="fonts/noto-sans-kr/400.css">
+<link rel="stylesheet" href="fonts/noto-sans-kr/500.css">
+<link rel="stylesheet" href="fonts/noto-sans-kr/700.css">
+<link rel="stylesheet" href="fonts/noto-sans-kr/900.css">
+<link rel="stylesheet" href="show.css">
+<link rel="stylesheet" href="announce.css">
+<style>.fx .grp { position: absolute; inset: 0; }</style>
+</head>
+<body data-theme="default">
+<div id="stage">
+  <div class="bg"></div>
+  <div class="amb"></div>
+
+  <div class="fx fx-default" aria-hidden="true">
+    <i class="beam"></i><i class="beam b2"></i>
+    <i class="reel"><svg width="440" height="440" viewBox="0 0 440 440" fill="none" stroke="#E8C27A" stroke-width="5"><circle cx="220" cy="220" r="212"/><circle cx="220" cy="220" r="34"/><circle cx="220" cy="92" r="52"/><circle cx="331" cy="156" r="52"/><circle cx="331" cy="284" r="52"/><circle cx="220" cy="348" r="52"/><circle cx="109" cy="284" r="52"/><circle cx="109" cy="156" r="52"/></svg></i>
+    <i class="floor"></i>
+    <div class="grp"><i class="dust"></i><i class="dust"></i><i class="dust"></i><i class="dust"></i><i class="dust"></i><i class="dust"></i></div>
+    <i class="curtain l"></i><i class="curtain r"></i><i class="shade"></i>
+  </div>
+  <div class="fx fx-sf" aria-hidden="true">
+    <i class="stars"></i><i class="neb n1"></i><i class="neb n2"></i>
+    <i class="orbit"><b class="o1"></b><b class="o2"></b></i>
+    <i class="grid"></i>
+  </div>
+  <div class="fx fx-horror" aria-hidden="true">
+    <i class="fog f1"></i><i class="fog f2"></i><i class="fog f3"></i><i class="lamp"></i>
+    <i class="scr"></i><i class="scr s2"></i><i class="vig"></i>
+  </div>
+  <div class="fx fx-romance" aria-hidden="true">
+    <div class="grp"><i class="bk"></i><i class="bk"></i><i class="bk"></i><i class="bk"></i><i class="bk"></i><i class="bk"></i><i class="bk"></i></div>
+    <i class="pt p1"></i><i class="pt p2"></i><i class="pt p3"></i><i class="pt p4"></i><i class="pt p5"></i>
+  </div>
+  <div class="fx fx-action" aria-hidden="true">
+    <i class="lines"></i><i class="fire"></i>
+    <div class="grp"><i class="em"></i><i class="em"></i><i class="em"></i><i class="em"></i><i class="em"></i><i class="em"></i><i class="em"></i><i class="em"></i></div>
+    <i class="dark"></i>
+  </div>
+
+  <!-- 영화 정보 / 안내방송 -->
+  <section id="scene-main" class="scene">
+    <div class="poster-shadow"></div>
+    <div class="poster-wrap">
+      <div class="poster3d">
+        <div class="poster-glow"></div>
+        <div class="poster-back"></div>
+        <div class="poster-frame">
+          <div class="bulbs t1"></div><div class="bulbs t2"></div><div class="bulbs b1"></div><div class="bulbs b2"></div>
+          <div class="poster-img"><span class="ph num">POSTER</span><img id="poster" alt="" class="hide"><div class="sheen"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="col" id="col">
+      <div class="eyebrow">
+        <div class="bar"></div><div class="en num" id="eyebrowEn">NOW SHOWING</div><div class="ko">오늘의 상영작</div>
+      </div>
+      <div class="title-box">
+        <div class="title disp" id="title"></div>
+        <div class="orig num" id="orig"></div>
+      </div>
+      <div class="rating-row">
+        <div class="gauge" id="gauge"><div class="gauge-in"><b class="num" id="rating"></b><span>평점</span></div></div>
+        <div class="rating-side"><div class="chips" id="chips"></div><div class="facts" id="facts"></div></div>
+      </div>
+      <div class="credits"><div id="director"></div><div id="cast"></div></div>
+      <div class="meta-line" id="metaLine"></div>
+      <div class="overview" id="overview"><div class="ov-inner" id="ovInner"></div></div>
+    </div>
+    <div class="strip">
+      <div class="perf t"></div><div class="perf b"></div>
+      <div class="row">
+        <div class="lbl">상영 시작까지</div><div class="clock num" id="clock">00:00</div>
+        <div class="track"><div class="fill" id="fill"></div></div>
+        <div class="next-en num">NEXT</div><div class="next-ko" id="next">예고편</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 안내방송: 위쪽 큰 무대(아나운서 + 장면), 아래 자막 띠와 영화 요약 -->
+  <section id="scene-announce" class="scene">
+    <div class="an-top">
+      <div class="an-eyebrow"><div class="bar"></div><div class="en num">STARTING SOON</div><div class="ko">안내방송</div></div>
+      <div class="an-count"><span>상영까지</span><b class="num" id="miniClock">01:00</b></div>
+    </div>
+    <div class="an-anchor"><svg class="anc" viewBox="0 0 380 520" aria-hidden="true">
+<defs>
+<linearGradient id="ancSkin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBDDBD"/><stop offset="1" stop-color="#F1C39C"/></linearGradient>
+<linearGradient id="ancHair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5A3A2C"/><stop offset="1" stop-color="#2E1C16"/></linearGradient>
+<linearGradient id="ancJacket" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#84274A"/><stop offset="1" stop-color="#5C1832"/></linearGradient>
+</defs>
+<rect class="anc-sign" x="110" y="6" width="160" height="50" rx="10"/><text class="num anc-signt" x="190" y="43" text-anchor="middle">ON AIR</text>
+<g class="anc-body">
+<path class="anc-hairback" d="M100 190C88 106 136 54 190 54C244 54 292 106 280 190C286 240 300 292 296 348C280 362 258 362 244 350C250 300 252 250 250 206H130C128 250 130 300 136 350C122 362 100 362 84 348C80 292 94 240 100 190Z"/>
+<path class="anc-suit" d="M64 520V408C64 358 104 330 150 318L190 360L230 318C276 330 316 358 316 408V520Z"/>
+<path class="anc-shirt" d="M152 316L190 384L228 316L214 300H166Z"/>
+<path class="anc-lapel" d="M150 318L190 384L166 414L128 332ZM230 318L190 384L214 414L252 332Z"/>
+<path class="anc-neck" d="M172 262H208V304Q190 322 172 304Z"/>
+<path class="anc-neckshade" d="M172 276Q190 296 208 276V290Q190 306 172 290Z"/>
+<g class="anc-head">
+<path class="anc-face" d="M118 178C118 118 152 88 190 88C228 88 262 118 262 178C262 214 250 244 228 264C214 276 202 282 190 282C178 282 166 276 152 264C130 244 118 214 118 178Z"/>
+<path class="anc-hair" d="M108 196C96 112 142 64 192 64C244 64 286 112 272 196C268 160 252 132 222 116C200 146 150 166 118 170C112 178 110 186 108 196Z"/>
+<path class="anc-shine" d="M150 92C170 80 204 78 226 90"/>
+<circle class="anc-ring" cx="117" cy="232" r="6"/><circle class="anc-ring" cx="263" cy="232" r="6"/>
+<g class="anc-eyes">
+<g><ellipse class="anc-white" cx="160" cy="192" rx="13" ry="10"/><circle class="anc-iris" cx="161" cy="192" r="8"/><circle class="anc-glint" cx="164" cy="189" r="2.6"/><path class="anc-lash" d="M145 190C150 180 170 178 176 190"/></g>
+<g><ellipse class="anc-white" cx="220" cy="192" rx="13" ry="10"/><circle class="anc-iris" cx="219" cy="192" r="8"/><circle class="anc-glint" cx="222" cy="189" r="2.6"/><path class="anc-lash" d="M204 190C210 178 230 180 235 190"/></g>
+</g>
+<path class="anc-brow" d="M144 172C152 164 166 163 176 168M204 168C214 163 228 164 236 172"/>
+<path class="anc-nose" d="M188 206C186 214 186 220 192 222"/>
+<ellipse class="anc-cheek" cx="140" cy="226" rx="14" ry="9"/><ellipse class="anc-cheek" cx="240" cy="226" rx="14" ry="9"/>
+<path class="anc-smile" d="M172 242C180 240 186 242 190 243C194 242 200 240 208 242C202 254 178 254 172 242Z"/>
+<g class="anc-mouth"><path class="anc-mouthin" d="M172 242C180 238 200 238 208 242C204 262 176 262 172 242Z"/><path class="anc-teeth" d="M177 243C184 241 196 241 203 243L201 248C194 249 186 249 179 248Z"/></g>
+</g>
+<path class="anc-bow" d="M190 338L156 320V358ZM190 338L224 320V358Z"/><path class="anc-bow" d="M184 346L172 382L188 372ZM196 346L208 382L192 372Z"/><circle class="anc-knot" cx="190" cy="338" r="9"/>
+<g class="anc-arm"><path class="anc-sleeve" d="M294 420C322 398 338 366 342 334"/><path class="anc-cuff" d="M324 334H360"/>
+<g class="anc-handg"><path class="anc-hand" d="M328 326C326 310 330 298 342 298C354 298 358 310 356 326Z"/><path class="anc-finger" d="M333 300V284M340 298V280M347 298V281M354 302V288M329 314L320 304"/></g></g>
+</g>
+<rect class="anc-desk" x="0" y="446" width="380" height="74" rx="10"/><path class="anc-deskline" d="M0 456H380"/>
+<path class="anc-micst" d="M96 446V396"/><rect class="anc-mic" x="80" y="336" width="32" height="64" rx="16"/><path class="anc-micgrill" d="M86 352H106M86 362H106M86 372H106"/><path class="anc-micst" d="M70 446H122"/>
+</svg><div class="an-name">안내 아나운서</div></div>
+    <div class="an-panel" id="annStage" aria-hidden="true">
+      <div class="an-chip" id="annChip"></div>
+      <div class="as" data-scene="hello" data-label="환영합니다"><svg viewBox="0 0 1300 660" preserveAspectRatio="xMidYMid meet">
+<defs><pattern id="curt" width="46" height="10" patternUnits="userSpaceOnUse"><rect width="46" height="10" fill="#4E0C17"/><rect x="0" width="14" height="10" fill="#2A060D"/><rect x="18" width="12" height="10" fill="#8A1626"/></pattern></defs>
+<text class="t-big num" x="650" y="330" text-anchor="middle">WELCOME</text>
+<text class="t-ko disp" x="650" y="430" text-anchor="middle">환영합니다</text>
+<rect class="cur-l" x="0" y="0" width="650" height="660" fill="url(#curt)"/>
+<rect class="cur-r" x="650" y="0" width="650" height="660" fill="url(#curt)"/>
+<rect x="0" y="0" width="1300" height="46" fill="#5A0F1C"/><path class="acc-line" d="M0 46H1300"/></svg></div>
+      <div class="as" data-scene="projector" data-label="오늘의 영화"><svg viewBox="0 0 1300 660" preserveAspectRatio="xMidYMid meet">
+<polygon class="ray" points="470,330 880,70 880,560 470,372"/>
+<g class="reel" style="transform-origin:170px 200px"><circle cx="170" cy="200" r="92" class="st"/><circle cx="170" cy="200" r="15" class="st"/><circle cx="223.4" cy="200.0" r="20" class="st"/><circle cx="196.7" cy="246.2" r="20" class="st"/><circle cx="143.3" cy="246.2" r="20" class="st"/><circle cx="116.6" cy="200.0" r="20" class="st"/><circle cx="143.3" cy="153.8" r="20" class="st"/><circle cx="196.7" cy="153.8" r="20" class="st"/></g><g class="reel" style="transform-origin:360px 212px"><circle cx="360" cy="212" r="80" class="st"/><circle cx="360" cy="212" r="13" class="st"/><circle cx="406.4" cy="212.0" r="18" class="st"/><circle cx="383.2" cy="252.2" r="18" class="st"/><circle cx="336.8" cy="252.2" r="18" class="st"/><circle cx="313.6" cy="212.0" r="18" class="st"/><circle cx="336.8" cy="171.8" r="18" class="st"/><circle cx="383.2" cy="171.8" r="18" class="st"/></g>
+<rect class="pj-body" x="110" y="290" width="330" height="170" rx="20"/><circle class="pj-dot" cx="170" cy="345" r="24"/>
+<rect class="pj-lens" x="438" y="318" width="52" height="66" rx="8"/>
+<path class="pj-leg" d="M190 460l-30 112M360 460l30 112"/>
+<rect class="scr" x="880" y="56" width="344" height="516" rx="10"/>
+<image id="annPoster" x="892" y="68" width="320" height="492" preserveAspectRatio="xMidYMid slice"/>
+<text class="t-scr num" id="annPosterPh" x="1052" y="330" text-anchor="middle">MOVIE</text></svg></div>
+      <div class="as" data-scene="numbers" data-label="관람 안내"><svg viewBox="0 0 1300 660" preserveAspectRatio="xMidYMid meet"><g class="card c1"><rect x="80" y="96" width="330" height="430" rx="22" class="card-bg"/>
+<text class="t-num num" x="114" y="212">1</text><g class="mv " style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(275,372) scale(2.0,2.0)"><g class="pp pA">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="seat"><path d="M241 392L225 288" stroke-width="16"/><path d="M245 394H313" stroke-width="16"/></g>
+<text class="t-card" x="245" y="486" text-anchor="middle">자리에 앉기</text></g><g class="card c2"><rect x="485" y="96" width="330" height="430" rx="22" class="card-bg"/>
+<text class="t-num num" x="519" y="212">2</text><g transform="translate(650,330)"><rect class="ic-ph" x="-52" y="-92" width="104" height="184" rx="18"/><g transform="translate(-36,-36) scale(3)"><path class="ic-bell" d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zM10 19a2 2 0 0 0 4 0"/></g><path class="ic-slash" d="M-66 -66L66 66"/></g>
+<text class="t-card" x="650" y="486" text-anchor="middle">휴대전화 무음</text></g><g class="card c3"><rect x="890" y="96" width="330" height="430" rx="22" class="card-bg"/>
+<text class="t-num num" x="924" y="212">3</text><rect class="ic-exit" x="952" y="262" width="150" height="150" rx="16"/><g class="mv " style="--t:16deg;--lF:-58deg;--sF:20deg;--lB:38deg;--sB:85deg;--aF:55deg;--aB:-60deg;--fF:-85deg;--fB:-85deg"><g transform="translate(1020,345) scale(1.25,1.25)"><g class="pp pW">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><path class="ic-door" d="M1078 282V392"/>
+<text class="t-card" x="1055" y="486" text-anchor="middle">비상구 확인</text></g></svg></div>
+      <div class="as" data-scene="seats" data-label="첫째 · 자리에 앉아 주세요"><svg viewBox="0 0 1300 660" preserveAspectRatio="xMidYMid meet"><path class="floor" d="M0 576H1300"/><rect class="screen-glow" x="1262" y="150" width="20" height="380" rx="8"/><g class="seat me"><path d="M234 522L208 351" stroke-width="26"/><path d="M240 526H353" stroke-width="26"/><path d="M293 539V572" stroke-width="20"/></g><g class="seat "><path d="M504 522L478 351" stroke-width="26"/><path d="M510 526H623" stroke-width="26"/><path d="M563 539V572" stroke-width="20"/></g><g class="seat "><path d="M774 522L748 351" stroke-width="26"/><path d="M780 526H893" stroke-width="26"/><path d="M833 539V572" stroke-width="20"/></g><g class="seat "><path d="M1044 522L1018 351" stroke-width="26"/><path d="M1050 526H1163" stroke-width="26"/><path d="M1103 539V572" stroke-width="20"/></g><g class="mv idle i0" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(560,489.5) scale(3.3,3.3)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="mv idle i1" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(830,489.5) scale(3.3,3.3)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="mv idle i2" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(1100,489.5) scale(3.3,3.3)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="mv walker" style="--aF:8deg;--aB:-8deg;--fF:-12deg;--fB:-12deg"><g transform="translate(290,433.4) scale(3.3,3.3)"><g class="pp pA">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="check" transform="translate(290,238)"><circle r="34"/><path d="M-15 1l11 11 20-23"/></g></svg></div>
+      <div class="as" data-scene="ring" data-label="둘째 · 휴대전화는 무음으로"><svg viewBox="0 0 1300 660" preserveAspectRatio="xMidYMid meet"><path class="floor" d="M0 576H1300"/><g class="seat "><path d="M244 522L218 351" stroke-width="26"/><path d="M250 526H363" stroke-width="26"/><path d="M303 539V572" stroke-width="20"/></g><g class="seat "><path d="M584 522L558 351" stroke-width="26"/><path d="M590 526H703" stroke-width="26"/><path d="M643 539V572" stroke-width="20"/></g><g class="seat "><path d="M924 522L898 351" stroke-width="26"/><path d="M930 526H1043" stroke-width="26"/><path d="M983 539V572" stroke-width="20"/></g><g class="mv vic v0" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(300,489.5) scale(3.3,3.3)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<g transform="translate(6,-78)"><g class="anger"><path d="M-11 -4q7 0 7 -7M4 -11q0 7 7 7M11 4q-7 0 -7 7M-4 11q0 -7 -7 -7"/></g></g></g></g></g><g class="mv ringer" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-48deg;--fF:-78deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(640,489.5) scale(3.3,3.3)"><g class="pp pA">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/><rect class="phone" x="-4.5" y="9" width="9" height="15" rx="2"/><rect class="pscr" x="-3" y="11" width="6" height="11" rx="1"/></g></g></g></g></g>
+</g></g></g><g class="mv vic v1" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(980,489.5) scale(3.3,3.3)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<g transform="translate(6,-78)"><g class="anger"><path d="M-11 -4q7 0 7 -7M4 -11q0 7 7 7M11 4q-7 0 -7 7M-4 11q0 -7 -7 -7"/></g></g></g></g></g><g class="ringfx" transform="translate(728,394)">
+<path class="wave w1" d="M26 -34a44 44 0 0 1 0 68M-26 -34a44 44 0 0 0 0 68"/><path class="wave w2" d="M44 -58a74 74 0 0 1 0 116M-44 -58a74 74 0 0 0 0 116"/><path class="wave w3" d="M62 -82a104 104 0 0 1 0 164M-62 -82a104 104 0 0 0 0 164"/>
+<g class="note n1" transform="translate(70,-190)"><circle cx="0" cy="0" r="9"/><path d="M8 0V-34l20 -6"/></g><g class="note n2" transform="translate(-110,-210)"><circle cx="0" cy="0" r="8"/><path d="M7 0V-30l18 -6"/></g></g>
+<g class="mutebadge" transform="translate(758,226)"><circle r="46"/><g transform="translate(-27,-27) scale(2.25)"><path d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zM10 19a2 2 0 0 0 4 0"/></g><path class="slash" d="M-30 -30L30 30"/></g>
+<text class="t-fx bell-t disp" x="650" y="128" text-anchor="middle">따르릉!</text></svg></div>
+      <div class="as" data-scene="light" data-label="둘째 · 상영 중에는 화면을 꺼 주세요"><svg viewBox="0 0 1300 660" preserveAspectRatio="xMidYMid meet"><rect class="dark" x="0" y="0" width="1300" height="660"/><path class="floor" d="M0 576H1300"/><g class="seat "><path d="M244 522L218 351" stroke-width="26"/><path d="M250 526H363" stroke-width="26"/><path d="M303 539V572" stroke-width="20"/></g><g class="seat "><path d="M584 522L558 351" stroke-width="26"/><path d="M590 526H703" stroke-width="26"/><path d="M643 539V572" stroke-width="20"/></g><g class="seat "><path d="M924 522L898 351" stroke-width="26"/><path d="M930 526H1043" stroke-width="26"/><path d="M983 539V572" stroke-width="20"/></g><defs><linearGradient id="glare" x1="1" x2="0"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".85"/><stop offset="1" stop-color="#BFD8FF" stop-opacity="0"/></linearGradient></defs><polygon class="glare" points="1068,394 110,94 110,594" fill="url(#glare)"/><g class="mv dazz d0" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(300,489.5) scale(3.3,3.3)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<g transform="translate(6,-78)"><g class="anger"><path d="M-11 -4q7 0 7 -7M4 -11q0 7 7 7M11 4q-7 0 -7 7M-4 11q0 -7 -7 -7"/></g></g></g></g></g><g class="mv dazz d1" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(640,489.5) scale(3.3,3.3)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<g transform="translate(6,-78)"><g class="anger"><path d="M-11 -4q7 0 7 -7M4 -11q0 7 7 7M11 4q-7 0 -7 7M-4 11q0 -7 -7 -7"/></g></g></g></g></g><g class="mv lighter" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-48deg;--fF:-78deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(980,489.5) scale(3.3,3.3)"><g class="pp pA">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/><rect class="phone" x="-4.5" y="9" width="9" height="15" rx="2"/><rect class="pscr" x="-3" y="11" width="6" height="11" rx="1"/></g></g></g></g></g>
+</g></g></g><circle class="glow" cx="1068" cy="394" r="40"/><g class="offbadge" transform="translate(1098,226)"><circle r="46"/><text class="num" y="15" text-anchor="middle">OFF</text></g></svg></div>
+      <div class="as" data-scene="fire" data-label="셋째 · 비상구와 대피로를 확인하세요"><svg viewBox="0 0 1300 660" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="heat" x1="0" x2="1"><stop offset="0" stop-color="#FF4A1E" stop-opacity=".5"/><stop offset="1" stop-color="#FF4A1E" stop-opacity="0"/></linearGradient></defs><rect class="heat" x="0" y="0" width="760" height="660" fill="url(#heat)"/><path class="floor" d="M0 576H1300"/><circle class="smoke s0" cx="60" cy="330" r="38"/><circle class="smoke s1" cx="112" cy="290" r="50"/><circle class="smoke s2" cx="164" cy="330" r="62"/><circle class="smoke s3" cx="216" cy="290" r="38"/><circle class="smoke s4" cx="268" cy="330" r="50"/><g transform="translate(70,572)"><g class="flame a" style="transform:scale(1.25)"><path class="f1" d="M0 0C-70 -30 -62 -120 -18 -168C-22 -128 14 -118 6 -208C62 -150 82 -60 44 0Z"/><path class="f2" d="M2 0C-44 -22 -38 -84 -8 -118C-8 -90 16 -84 12 -140C46 -100 54 -40 30 0Z"/><path class="f3" d="M6 0C-18 -14 -16 -48 0 -70C2 -52 16 -50 14 -84C32 -58 34 -22 22 0Z"/></g></g><g transform="translate(190,572)"><g class="flame b" style="transform:scale(0.95)"><path class="f1" d="M0 0C-70 -30 -62 -120 -18 -168C-22 -128 14 -118 6 -208C62 -150 82 -60 44 0Z"/><path class="f2" d="M2 0C-44 -22 -38 -84 -8 -118C-8 -90 16 -84 12 -140C46 -100 54 -40 30 0Z"/><path class="f3" d="M6 0C-18 -14 -16 -48 0 -70C2 -52 16 -50 14 -84C32 -58 34 -22 22 0Z"/></g></g><g transform="translate(128,572)"><g class="flame c" style="transform:scale(1.5)"><path class="f1" d="M0 0C-70 -30 -62 -120 -18 -168C-22 -128 14 -118 6 -208C62 -150 82 -60 44 0Z"/><path class="f2" d="M2 0C-44 -22 -38 -84 -8 -118C-8 -90 16 -84 12 -140C46 -100 54 -40 30 0Z"/><path class="f3" d="M6 0C-18 -14 -16 -48 0 -70C2 -52 16 -50 14 -84C32 -58 34 -22 22 0Z"/></g></g><g transform="translate(262,572)"><g class="flame a" style="transform:scale(0.7)"><path class="f1" d="M0 0C-70 -30 -62 -120 -18 -168C-22 -128 14 -118 6 -208C62 -150 82 -60 44 0Z"/><path class="f2" d="M2 0C-44 -22 -38 -84 -8 -118C-8 -90 16 -84 12 -140C46 -100 54 -40 30 0Z"/><path class="f3" d="M6 0C-18 -14 -16 -48 0 -70C2 -52 16 -50 14 -84C32 -58 34 -22 22 0Z"/></g></g><rect class="door" x="1126" y="246" width="128" height="326" rx="6"/><rect class="door-in" x="1140" y="260" width="100" height="312"/><g class="exitsign"><rect x="1098" y="150" width="184" height="70" rx="10"/><text class="num" x="1190" y="203" text-anchor="middle">EXIT</text></g><g class="guide"><path d="M430 606l22 20-22 20M456 606l22 20-22 20"/><path d="M560 606l22 20-22 20M586 606l22 20-22 20"/><path d="M690 606l22 20-22 20M716 606l22 20-22 20"/><path d="M820 606l22 20-22 20M846 606l22 20-22 20"/><path d="M950 606l22 20-22 20M976 606l22 20-22 20"/></g><g class="mv runner r0" style="--t:16deg;--fF:-85deg;--fB:-85deg"><g transform="translate(300,446.0) scale(3.0,3.0)"><g class="pp pA">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="mv runner r1 cover" style="--t:16deg;--fF:-112deg;--fB:-85deg;--aF:-118deg"><g transform="translate(300,446.0) scale(3.0,3.0)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="mv runner r2" style="--t:16deg;--fF:-85deg;--fB:-85deg"><g transform="translate(300,446.0) scale(3.0,3.0)"><g class="pp pA">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="mv runner r3" style="--t:16deg;--fF:-85deg;--fB:-85deg"><g transform="translate(300,446.0) scale(3.0,3.0)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g></svg></div>
+      <div class="as" data-scene="enjoy" data-label="즐거운 관람 되세요"><svg viewBox="0 0 1300 660" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="scrlight" x1="1" x2="0"><stop offset="0" stop-color="#FFF3D0" stop-opacity=".55"/><stop offset="1" stop-color="#FFF3D0" stop-opacity="0"/></linearGradient></defs><polygon class="scrbeam" points="1250,120 1250,540 250,600 250,260" fill="url(#scrlight)"/><path class="floor" d="M0 576H1300"/><rect class="bigscreen" x="1238" y="100" width="26" height="450" rx="10"/><g class="seat "><path d="M214 522L188 351" stroke-width="26"/><path d="M220 526H333" stroke-width="26"/><path d="M273 539V572" stroke-width="20"/></g><g class="seat "><path d="M504 522L478 351" stroke-width="26"/><path d="M510 526H623" stroke-width="26"/><path d="M563 539V572" stroke-width="20"/></g><g class="seat "><path d="M794 522L768 351" stroke-width="26"/><path d="M800 526H913" stroke-width="26"/><path d="M853 539V572" stroke-width="20"/></g><g class="mv aud a0" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(270,489.5) scale(3.3,3.3)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="mv aud a1" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-70deg;--fF:-95deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(560,489.5) scale(3.3,3.3)"><g class="pp pA">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="mv aud a2" style="--lF:-88deg;--sF:88deg;--lB:-84deg;--sB:86deg;--aF:-22deg;--fF:-62deg;--aB:-16deg;--fB:-58deg;--t:-3deg"><g transform="translate(850,489.5) scale(3.3,3.3)"><g class="pp pB">
+<g class="bk"><g class="j-lB"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sB"><path d="M0 0V21h7"/></g></g></g></g>
+<g class="j-t"><g class="bk"><g transform="translate(0,-30)"><g class="j-aB"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fB"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+<path class="trs" d="M0 0V-32"/><g transform="translate(0,-50)"><g class="j-h"><circle r="10.5"/></g></g></g>
+<g class="j-lF"><path d="M0 0V21"/><g transform="translate(0,21)"><g class="j-sF"><path d="M0 0V21h7"/></g></g></g>
+<g class="j-t"><g transform="translate(0,-30)"><g class="j-aF"><path class="arm" d="M0 0V17"/><g transform="translate(0,17)"><g class="j-fF"><path class="arm" d="M0 0V15"/></g></g></g></g></g>
+</g></g></g><g class="popcorn" transform="translate(676,466) scale(1.25)"><circle class="pk" cx="-12" cy="-52" r="15"/><circle class="pk" cx="14" cy="-56" r="16"/><circle class="pk" cx="0" cy="-70" r="14"/>
+<path class="pb" d="M-34 -46H34L24 30H-24Z"/><path class="ps" d="M-18 -46l4 76M0 -46V30M18 -46l-4 76"/></g>
+<text class="t-ko enjoy-t disp" x="650" y="120" text-anchor="middle">즐거운 관람 되세요</text></svg></div>
+    </div>
+    <div class="band" id="band">
+      <div class="onair"><div class="eq"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="en num">ON AIR</div></div>
+      <div class="sep"></div>
+      <div class="subs"><div class="prev hide" id="subPrev"></div><div class="cur" id="subCur"></div></div>
+    </div>
+    <div class="tbar abar">
+      <div class="perf"></div>
+      <div class="row">
+        <div class="thumb"><img id="aThumb" alt="" class="hide"></div>
+        <div class="tt"><b class="disp" id="aTitle"></b><span id="aMeta"></span></div>
+        <div class="rate" id="aRateBox"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.5 7-6.3-3.6-6.3 3.6 1.5-7L2 9.4l7-.8z"/></svg><b class="num" id="aRate"></b></div>
+        <div class="vsep"></div>
+        <div class="sum" id="aSum"></div>
+        <div class="left"><span>상영 시작까지</span><b class="num" id="aClock">00:00</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 예고편 -->
+  <section id="scene-trailer" class="scene">
+    <div class="curtain l"></div><div class="curtain r"></div>
+    <canvas id="ambCanvas" width="64" height="36" aria-hidden="true"></canvas>
+    <video id="video" playsinline preload="auto"></video>
+    <div class="glow"></div>
+    <div class="tbar">
+      <div class="perf"></div>
+      <div class="row">
+        <div class="thumb"><img id="tThumb" alt="" class="hide"></div>
+        <div class="tt"><b class="disp" id="tTitle"></b><span id="tMeta"></span></div>
+        <div class="rate" id="tRateBox"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.5 7-6.3-3.6-6.3 3.6 1.5-7L2 9.4l7-.8z"/></svg><b class="num" id="tRate"></b></div>
+        <div class="vsep"></div>
+        <div class="sum" id="tSum"></div>
+        <div class="left"><span>상영 시작까지</span><b class="num" id="tClock">00:00</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 카운트다운 -->
+  <section id="scene-countdown" class="scene">
+    <div class="cross-h"></div><div class="cross-v"></div>
+    <div class="head"><div class="en num">SHOWTIME</div><div class="ko">곧 상영이 시작됩니다</div></div>
+    <div class="dial-wrap"><div class="dial">
+      <i class="r-pulse"></i><i class="r-back"></i><i class="sweep"></i><i class="r-main"></i><i class="r-in"></i>
+      <div class="n"><b class="num" id="cdNum">10</b></div>
+    </div></div>
+    <div class="foot"><div class="pips" id="pips"></div><div class="t disp" id="cdTitle"></div><div class="s">즐거운 관람 되세요</div></div>
+  </section>
+
+  <!-- 끝 -->
+  <section id="scene-end" class="scene">
+    <div class="en num" id="endEn">SHOWTIME</div><div class="ko" id="endKo">상영을 시작합니다</div>
+  </section>
+
+  <div id="flicker"></div>
+  <div id="notice" role="status"><span class="tag">공지<small id="noticeIdx"></small></span><div class="txt" id="noticeText"></div></div>
+  <div id="toast"></div>
+</div>
+
+<audio id="announce" src="../assets/audio/announcement.wav" preload="auto"></audio>
+<script src="show.js"></script>
+</body>
+</html>
