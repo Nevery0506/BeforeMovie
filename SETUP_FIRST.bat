@@ -15,6 +15,8 @@ echo.
 echo  PreShow - first-time setup (internet needed)
 echo  This PC: %PS_ARCH%    Downloading for: %PS_WANT%   (about 350 MB per PC type)
 echo.
+set "PS_TAR=%SystemRoot%\System32\tar.exe"
+if not exist "%PS_TAR%" set "PS_TAR=tar"
 where curl >nul 2>nul
 if errorlevel 1 goto :nocurl
 if not exist "runtime" mkdir "runtime"
@@ -57,7 +59,7 @@ if exist "runtime\electron%SFX%\electron.exe" goto :gs2
 echo  [%~2] Downloading the app engine...
 curl -L --fail --retry 3 -o "runtime\electron%SFX%.zip" "https://github.com/electron/electron/releases/download/v45.3.0/electron-v45.3.0-%~2.zip"
 if errorlevel 1 exit /b 1
-tar -xf "runtime\electron%SFX%.zip" -C "runtime\electron%SFX%"
+"%PS_TAR%" -xf "runtime\electron%SFX%.zip" -C "runtime\electron%SFX%"
 if errorlevel 1 exit /b 1
 del "runtime\electron%SFX%.zip"
 
@@ -72,7 +74,7 @@ if exist "runtime\bin%SFX%\ffmpeg.exe" exit /b 0
 echo  [%~2] Downloading the video tool (ffmpeg)...
 curl -L --fail --retry 3 -o "runtime\ffmpeg%SFX%.zip" "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-%~4-gpl.zip"
 if errorlevel 1 exit /b 1
-tar -xf "runtime\ffmpeg%SFX%.zip" -C "runtime\bin%SFX%" --strip-components=2 "ffmpeg-master-latest-%~4-gpl/bin/ffmpeg.exe"
+"%PS_TAR%" -xf "runtime\ffmpeg%SFX%.zip" -C "runtime\bin%SFX%" --strip-components=2 "ffmpeg-master-latest-%~4-gpl/bin/ffmpeg.exe"
 if errorlevel 1 exit /b 1
 del "runtime\ffmpeg%SFX%.zip"
 exit /b 0
