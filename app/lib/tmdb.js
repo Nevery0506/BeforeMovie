@@ -16,11 +16,14 @@ async function tm(pathname, params, key) {
   else u.searchParams.set('api_key', key.trim());
   let r;
   try {
-    r = await fetch(u, { headers });
+    r = await (global.preshowFetch || fetch)(u, { headers });
   } catch (e) {
-    throw new Error('인터넷 연결을 확인해 주세요. (영화 정보 서버에 연결할 수 없습니다)');
+    // 원인을 알 수 있도록 실제 오류 내용을 함께 보여 줍니다.
+    const why = (e.cause && (e.cause.code || e.cause.message)) || e.message || '';
+    throw new Error('영화 정보 서버(api.themoviedb.org)에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.' + (why ? ' [' + String(why).slice(0, 80) + ']' : ''));
   }
   if (r.status === 401) throw new Error('TMDB API 키가 올바르지 않습니다. [설정]에서 다시 확인해 주세요.');
+  if (r.status === 429) throw new Error('영화 정보 서버가 잠시 요청을 제한했습니다. 1분쯤 뒤에 다시 검색해 주세요.');
   if (!r.ok) throw new Error('영화 정보 서버 오류 (' + r.status + ')');
   return r.json();
 }
@@ -62,7 +65,7 @@ function certification(rel) {
 }
 
 async function download(url, dest) {
-  const r = await fetch(url);
+  const r = await (global.preshowFetch || fetch)(url);
   if (!r.ok) throw new Error('이미지 다운로드 실패 ' + r.status);
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, Buffer.from(await r.arrayBuffer()));

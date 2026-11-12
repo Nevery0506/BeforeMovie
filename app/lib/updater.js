@@ -36,7 +36,7 @@ async function check(appDir) {
   let lastError = '업데이트 확인 실패';
   for (const [url, headers] of sources) {
     try {
-      const r = await fetch(url, { headers });
+      const r = await (global.preshowFetch || fetch)(url, { headers });
       if (r.status === 404) { lastError = '업데이트 저장소에서 프로그램을 찾지 못했습니다.'; continue; }
       if (!r.ok) { lastError = '업데이트 확인 실패 (' + r.status + ')'; continue; }
       const v = JSON.parse(await r.text()).version;
@@ -102,7 +102,7 @@ async function download(appDir, root, onProgress) {
 
   const url = process.env.PRESHOW_UPDATE_ZIP || 'https://codeload.github.com/' + info.repo + '/zip/refs/heads/' + info.branch;
   let r;
-  try { r = await fetch(url); } catch (e) { throw new Error('인터넷 연결을 확인해 주세요. (내려받기 실패)'); }
+  try { r = await (global.preshowFetch || fetch)(url); } catch (e) { throw new Error('인터넷 연결을 확인해 주세요. (내려받기 실패)'); }
   if (!r.ok || !r.body) throw new Error('내려받기 실패 (' + r.status + ')');
   const zip = path.join(work, 'update.zip');
   const out = fs.createWriteStream(zip);

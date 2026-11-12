@@ -1,9 +1,16 @@
 'use strict';
-const { app, BrowserWindow, ipcMain, screen, dialog, shell, powerSaveBlocker, nativeImage } = require('electron');
+const { app, BrowserWindow, ipcMain, screen, dialog, shell, powerSaveBlocker, nativeImage, net } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { pathToFileURL, fileURLToPath } = require('url');
 
+// 인터넷 요청: 윈도우의 프록시·보안 프로그램 설정을 따르는 방식(net.fetch)을 먼저 쓰고,
+// 그것이 실패하면 기본 방식(fetch)으로 한 번 더 시도합니다.
+global.preshowFetch = async (url, opts) => {
+  let first = null;
+  try { if (app.isReady()) return await net.fetch(String(url), opts); } catch (e) { first = e; }
+  try { return await fetch(url, opts); } catch (e) { e.first = first; throw e; }
+};
 const tmdb = require('./lib/tmdb');
 const trailers = require('./lib/trailers');
 const browser = require('./lib/browser');
