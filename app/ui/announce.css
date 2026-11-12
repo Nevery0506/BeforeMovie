@@ -175,51 +175,35 @@
 .as.on .aud.a1 { animation: kEat 1.2s ease-in-out infinite alternate; }
 .as.on .aud.a0, .as.on .aud.a2 { animation: kNod 2.4s ease-in-out infinite alternate; }
 
-/* ── 아나운서 ── */
+/* ── 아나운서 (단순한 평면 스타일) ── */
 .anc { width: 380px; height: 520px; display: block; }
 .anc-sign { fill: #17141A; stroke: #FF5A4D; stroke-width: 4; } .anc-signt { font-size: 34px; fill: #FF5A4D; letter-spacing: 4px; }
 #scene-announce.speaking .anc-sign { animation: signGlow 1s ease-in-out infinite alternate; }
 @keyframes signGlow { from { filter: drop-shadow(0 0 4px rgba(255,90,77,.4)); } to { filter: drop-shadow(0 0 18px rgba(255,90,77,1)); } }
-.anc-body { transform-box: fill-box; transform-origin: 50% 100%; animation: breathe 3.6s ease-in-out infinite alternate; }
-@keyframes breathe { from { transform: scaleY(1); } to { transform: scaleY(1.012); } }
-.anc-suit, .anc-sleeve { fill: url(#ancJacket); } .anc-lapel { fill: #4A1228; } .anc-shirt { fill: #FFFFFF; }
-.anc-bow { fill: var(--accent); } .anc-knot { fill: var(--accent); stroke: #4A1228; stroke-width: 2; }
-.anc-neck, .anc-face, .anc-hand { fill: url(#ancSkin); }
-.anc-neckshade { fill: #D9A27A; opacity: .55; }
-.anc-hair, .anc-hairback { fill: url(#ancHair); }
-.anc-shine { fill: none; stroke: #8A6248; stroke-width: 5; stroke-linecap: round; opacity: .7; }
+.anc-suit { fill: #6E1F3A; } .anc-lapel { fill: #561629; } .anc-shirt { fill: #FFFFFF; }
+.anc-bow { fill: var(--accent); } .anc-knot { fill: var(--accent); stroke: #561629; stroke-width: 2; }
+.anc-neck, .anc-face, .anc-hand { fill: #F3CDA6; }
+.anc-hair, .anc-hairback { fill: #3B2620; }
 .anc-ring { fill: var(--accent); }
-.anc-white { fill: #FFFFFF; } .anc-iris { fill: #3A2418; } .anc-glint { fill: #FFFFFF; }
-.anc-lash { fill: none; stroke: #2A1A16; stroke-width: 4; stroke-linecap: round; }
-.anc-brow { fill: none; stroke: #4A2E22; stroke-width: 4; stroke-linecap: round; }
-.anc-nose { fill: none; stroke: #D39C74; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
-.anc-cheek { fill: #F58FA0; opacity: .42; }
-.anc-smile { fill: #C8455C; }
-.anc-mouth { opacity: 0; transform-box: fill-box; transform-origin: 50% 0%; }
-.anc-mouthin { fill: #7A2233; stroke: #C8455C; stroke-width: 3.5; stroke-linejoin: round; } .anc-teeth { fill: #FFFFFF; }
+.anc-eyes ellipse { fill: #2A1A16; }
+.anc-brow { fill: none; stroke: #3B2620; stroke-width: 3.5; stroke-linecap: round; }
+.anc-nose { fill: none; stroke: #D9A87C; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.anc-cheek { fill: #F58FA0; opacity: .55; }
+.anc-smile { fill: none; stroke: #C2455A; stroke-width: 6; stroke-linecap: round; }
+.anc-mouth { fill: #B03A4E; opacity: 0; transform-box: fill-box; transform-origin: 50% 50%; }
 #scene-announce.speaking .anc-smile { opacity: 0; }
-/* 말할 때: 입 모양이 일정하지 않게 여러 크기로 바뀝니다 */
 #scene-announce.speaking .anc-mouth { opacity: 1; animation: talk .9s linear infinite; }
 @keyframes talk { 0%, 100% { transform: scaleY(.3); } 12% { transform: scaleY(1); } 26% { transform: scaleY(.55); } 40% { transform: scaleY(.95); } 55% { transform: scaleY(.35); } 68% { transform: scaleY(.8); } 84% { transform: scaleY(1.05); } }
-.anc-eyes { transform-box: fill-box; transform-origin: 50% 55%; animation: blinkEye 4.6s linear infinite; }
-@keyframes blinkEye { 0%, 44%, 49%, 80%, 84%, 100% { transform: scaleY(1); } 46.5% { transform: scaleY(.08); } 82% { transform: scaleY(.08); } }
-.anc-head { transform-box: fill-box; transform-origin: 50% 96%; animation: headIdle 5s ease-in-out infinite alternate; }
-@keyframes headIdle { from { transform: rotate(-1.5deg); } to { transform: rotate(1.5deg); } }
-#scene-announce.speaking .anc-head { animation: headTalk 1.9s ease-in-out infinite; }
-@keyframes headTalk { 0%, 100% { transform: rotate(-2deg) translateY(0); } 30% { transform: rotate(1.5deg) translateY(2px); } 60% { transform: rotate(3deg) translateY(0); } 80% { transform: rotate(0deg) translateY(2px); } }
-.anc-hairback { transform-box: fill-box; transform-origin: 50% 20%; animation: headIdle 5s ease-in-out infinite alternate; }
-.anc-sleeve { fill: none; stroke: #6E1F3A; stroke-width: 38; stroke-linecap: round; }
-.anc-cuff { stroke: #FFFFFF; stroke-width: 9; stroke-linecap: round; }
-.anc-finger { fill: none; stroke: #F5CFAB; stroke-width: 7; stroke-linecap: round; }
-.anc-arm { transform-box: view-box; transform-origin: 294px 420px; transform: rotate(10deg); transition: transform .5s ease; }
-#scene-announce.speaking .anc-arm { animation: gesture 1.6s ease-in-out infinite alternate; }
-@keyframes gesture { from { transform: rotate(10deg); } to { transform: rotate(-8deg); } }
-.anc-handg { transform-box: fill-box; transform-origin: 50% 100%; }
-#scene-announce.speaking .anc-handg { animation: wrist .8s ease-in-out infinite alternate; }
-@keyframes wrist { from { transform: rotate(-8deg); } to { transform: rotate(10deg); } }
+.anc-eyes { transform-box: fill-box; transform-origin: 50% 50%; animation: blinkEye 4.6s linear infinite; }
+@keyframes blinkEye { 0%, 44%, 49%, 80%, 84%, 100% { transform: scaleY(1); } 46.5% { transform: scaleY(.1); } 82% { transform: scaleY(.1); } }
+.anc-head { transform-box: fill-box; transform-origin: 50% 100%; animation: headBob 2.6s ease-in-out infinite alternate; }
+@keyframes headBob { from { transform: rotate(-2.5deg); } to { transform: rotate(2.5deg); } }
+.anc-sleeve { fill: none; stroke: #6E1F3A; stroke-width: 40; stroke-linecap: round; }
+.anc-arm { transform-box: view-box; transform-origin: 292px 406px; transform: rotate(8deg); }
+#scene-announce.speaking .anc-arm { animation: gesture 1.3s ease-in-out infinite alternate; }
+@keyframes gesture { from { transform: rotate(8deg); } to { transform: rotate(-10deg); } }
 .anc-desk { fill: #1C1216; stroke: var(--accent); stroke-width: 3; } .anc-deskline { stroke: var(--accent); stroke-width: 3; }
 .anc-micst { stroke: #C9C2BA; stroke-width: 8; stroke-linecap: round; } .anc-mic { fill: #3A3438; stroke: #C9C2BA; stroke-width: 4; }
-.anc-micgrill { stroke: #8E8780; stroke-width: 3; stroke-linecap: round; }
 
 /* 효과 줄이기: 움직임 없이 그림만 바뀜 */
 body.reduce-fx #scene-announce *, body.reduce-fx #scene-announce .as.on * { animation: none !important; }
