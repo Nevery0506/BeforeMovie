@@ -1,7 +1,7 @@
 {
   "name": "preshow",
   "productName": "PreShow",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "description": "영화 상영 전 프리쇼 프로그램",
   "main": "main.js",
   "private": true,
