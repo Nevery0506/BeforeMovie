@@ -148,8 +148,25 @@ body[data-theme="horror"] .title { animation: jitter 5s steps(1) infinite; }
 .fx-action .dark { left: 820px; top: 0; width: 1100px; height: 964px; background: linear-gradient(90deg, rgba(4,3,2,0), rgba(4,3,2,.6) 18%, rgba(4,3,2,.6)); }
 
 /* ── 장면 공통 ── */
-.scene { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .7s ease, visibility 0s linear .7s; }
-.scene.on { opacity: 1; visibility: visible; transition: opacity .7s ease, visibility 0s; }
+/* 화면 전환: 들어오는 화면은 살짝 큰 상태에서 또렷해지며 자리 잡고, 나가는 화면은 작아지며 흐려집니다. */
+.scene { position: absolute; inset: 0; opacity: 0; visibility: hidden; transform: scale(1.06); filter: blur(12px);
+  transition: opacity .9s ease, transform 1s cubic-bezier(.2,.7,.2,1), filter .9s ease, visibility 0s linear 1s; }
+.scene.on { opacity: 1; visibility: visible; transform: none; filter: none;
+  transition: opacity .9s ease, transform 1s cubic-bezier(.2,.7,.2,1), filter .9s ease, visibility 0s; }
+.scene.leaving { transform: scale(.95); }
+/* 안내방송은 아래에서 올라오고, 그때 줄거리 화면은 위로 밀려 올라갑니다. */
+#scene-announce { transform: translateY(90px); }
+#scene-announce.on { transform: none; }
+#scene-announce.leaving { transform: scale(.95); }
+.scene.leaving.up { transform: translateY(-90px); }
+/* 전환할 때 화면을 가로지르는 빛줄기 */
+#sweep { position: absolute; top: -10%; left: 0; width: 34%; height: 120%; pointer-events: none; opacity: 0; z-index: 30;
+  background: linear-gradient(90deg, rgba(var(--a),0), rgba(var(--a),.28) 35%, rgba(255,255,255,.5) 50%, rgba(var(--a),.28) 65%, rgba(var(--a),0));
+  filter: blur(10px); transform: translateX(-140%) skewX(-18deg); }
+#sweep.go { animation: sweepGo 1s cubic-bezier(.3,.1,.3,1); }
+@keyframes sweepGo { 0% { transform: translateX(-140%) skewX(-18deg); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(440%) skewX(-18deg); opacity: 0; } }
+body.reduce-fx .scene, body.reduce-fx .scene.on, body.reduce-fx .scene.leaving { transform: none !important; filter: none !important; }
+body.reduce-fx #sweep { display: none; }
 
 /* ── 정보 / 안내방송 장면 ── */
 .poster-wrap { position: absolute; left: 230px; top: 110px; width: 520px; height: 770px; perspective: 1600px; transform-origin: 0 0; transition: transform .9s ease; }

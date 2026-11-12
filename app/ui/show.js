@@ -76,8 +76,19 @@
 
   function setScene(name) {
     if (scene === name) return;
+    const prev = scene;
     scene = name;
-    ['main', 'announce', 'trailer', 'countdown', 'end'].forEach((n) => $('scene-' + n).classList.toggle('on', n === name));
+    ['main', 'announce', 'trailer', 'countdown', 'end'].forEach((n) => {
+      const el = $('scene-' + n);
+      el.classList.toggle('on', n === name);
+      el.classList.toggle('leaving', !!prev && n === prev);
+      el.classList.toggle('up', n === prev && name === 'announce');   // 안내방송으로 넘어갈 때는 위로 밀려남
+    });
+    if (!prev) return;   // 처음 켜질 때는 전환 효과 없이
+    clearTimeout(setScene._t);
+    setScene._t = setTimeout(() => document.querySelectorAll('.scene.leaving').forEach((el) => el.classList.remove('leaving', 'up')), 1100);
+    const sw = $('sweep');
+    sw.classList.remove('go'); void sw.offsetWidth; sw.classList.add('go');
   }
 
   // ── 영화 정보 채우기 ──
