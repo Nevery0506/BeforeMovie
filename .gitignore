@@ -2,5 +2,3 @@
 data/
 runtime/
 update_pending/
-# 안내방송·효과음 파일은 각 USB에만 둡니다 (공개 저장소에 올리지 않음)
-app/assets/audio/*.wav
