@@ -1,13 +1,10 @@
 /* 안내방송 화면: 위쪽 큰 무대(아나운서 + 멘트에 맞춘 장면), 아래 자막 띠와 영화 요약 */
 #scene-announce { background: var(--bg-center); }
-.an-top { position: absolute; left: 96px; right: 96px; top: 30px; height: 80px; display: flex; align-items: center; justify-content: space-between; }
-.an-eyebrow { display: flex; align-items: center; gap: 18px; }
-.an-eyebrow .bar { width: 56px; height: 2px; background: var(--accent); }
-.an-eyebrow .en { font-size: 40px; letter-spacing: 12px; color: var(--accent); line-height: 1; }
-.an-eyebrow .ko { font-size: 26px; font-weight: 700; letter-spacing: 4px; }
-.an-count { display: flex; align-items: baseline; gap: 16px; }
-.an-count span { font-size: 24px; font-weight: 700; color: var(--muted); }
-.an-count b { font-size: 80px; line-height: .9; letter-spacing: 3px; font-weight: 400; }
+.an-top { position: absolute; left: 96px; right: 96px; top: 26px; height: 84px; display: flex; align-items: center; gap: 22px; }
+.an-top .bar { width: 56px; height: 2px; background: var(--accent); flex-shrink: 0; }
+.an-top .bar.grow { flex: 1; width: auto; background: linear-gradient(90deg, var(--accent), rgba(var(--a), 0)); }
+.an-top .en { font-size: 34px; letter-spacing: 10px; color: var(--accent); line-height: 1; padding-top: 4px; }
+.an-top .an-title { font-size: 62px; line-height: 1.1; color: var(--text); text-shadow: 0 1px 0 rgba(var(--a),.9), 0 2px 0 rgba(var(--a),.6), 0 3px 0 rgba(var(--a),.35), 0 10px 22px rgba(0,0,0,.7); white-space: nowrap; }
 
 .an-anchor { position: absolute; left: 84px; top: 280px; width: 380px; height: 520px; }
 .an-anchor .an-name { display: none; }
@@ -108,13 +105,17 @@
 
 /* 4. 착석 */
 .as .screen-glow { fill: #FFF3D0; opacity: .8; }
-.as.on .walker { animation: walkIn 2.4s linear both, kWalk .6s linear 4, kSit .7s ease 2.4s forwards, sitDown .7s ease 2.4s forwards; }
-@keyframes walkIn { from { translate: -480px 0; } }
+/* 스크린 쪽(오른쪽)에서 걸어 들어와, 빈자리 앞에서 돌아선 뒤 앉습니다 */
+.as.on .walker { animation: walkIn 2.3s linear both, kWalk .575s linear 4, walkBob .2875s ease-in-out 8 alternate, kSit .7s ease 2.5s forwards, sitDown .7s ease 2.5s forwards; }
+.as.on .walker .pp { animation: turnRound .01s linear 2.36s both; }
+@keyframes walkIn { from { translate: 350px 0; } }
+@keyframes walkBob { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+@keyframes turnRound { from { transform: scaleX(-1); } }
 @keyframes sitDown { to { transform: translate(0, 56.1px); } }
 .as.on .idle { animation: kNod 2.2s ease-in-out infinite alternate; }
 .as.on .idle.i1 { animation-duration: 2.9s; } .as.on .idle.i2 { animation-duration: 2.5s; }
 .as .check circle { fill: #19B15E; } .as .check path { fill: none; stroke: #FFFFFF; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
-.as.on .check { animation: lateIn .4s ease 3.2s both; }
+.as.on .check { animation: lateIn .4s ease 3.3s both; }
 
 /* 5. 벨소리 */
 .as .ringer .pscr { fill: #9FE3FF; }
@@ -152,7 +153,7 @@
 .as .flame .f1 { fill: #E5391E; } .as .flame .f2 { fill: #FF8A1F; } .as .flame .f3 { fill: #FFD45A; }
 .as .flame.a { animation: flick .42s ease-in-out infinite alternate; } .as .flame.b { animation: flick .55s ease-in-out infinite alternate-reverse; } .as .flame.c { animation: flick .35s ease-in-out infinite alternate; }
 @keyframes flick { from { scale: 1 1; } to { scale: .9 1.14; } }
-.as .smoke { fill: #6B6266; opacity: 0; animation: smokeUp 3.2s linear infinite; }
+.as .smoke { fill: #6B6266; filter: blur(9px); opacity: 0; animation: smokeUp 3.2s linear infinite; }
 .as .smoke.s1 { animation-delay: .6s; } .as .smoke.s2 { animation-delay: 1.2s; } .as .smoke.s3 { animation-delay: 1.8s; } .as .smoke.s4 { animation-delay: 2.4s; }
 @keyframes smokeUp { 0% { translate: 0 0; opacity: 0; } 15% { opacity: .6; } 100% { translate: 90px -300px; opacity: 0; } }
 .as .door { fill: #2A2428; stroke: #E9FFF2; stroke-width: 5; } .as .door-in { fill: #DFFFEA; opacity: .9; }
@@ -166,6 +167,9 @@
 .as.on .runner { animation: runAcross 4.4s linear infinite, kRun .46s linear infinite; }
 .as.on .runner.cover { animation: runAcross 4.4s linear infinite, kRunLegs .46s linear infinite; }
 .as.on .runner.r1 { animation-delay: -1.1s, -.1s; } .as.on .runner.r2 { animation-delay: -2.2s, -.2s; } .as.on .runner.r3 { animation-delay: -3.3s, -.3s; }
+/* 달릴 때 몸이 위아래로 살짝 튀는 움직임 (이동과 겹치지 않게 안쪽 그룹에 줍니다) */
+.as.on .runner .pp { animation: runBob .23s ease-in-out infinite alternate; }
+@keyframes runBob { from { transform: translateY(0); } to { transform: translateY(-3px); } }
 @keyframes runAcross { 0% { translate: 0 0; opacity: 0; } 6% { opacity: 1; } 88% { opacity: 1; } 100% { translate: 860px 0; opacity: 0; } }
 
 /* 8. 즐거운 관람 */

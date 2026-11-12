@@ -489,10 +489,10 @@
     const clock = mmss(remaining);
     $('clock').textContent = clock;
     $('tClock').textContent = clock;
-    $('miniClock').textContent = clock;
     $('aClock').textContent = clock;
-    const total = Math.max(1, (T - startedAt) / 1000);
-    $('fill').style.width = Math.max(0, Math.min(100, (1 - remaining / total) * 100)) + '%';
+    // 진행 막대는 '상영 1분 전(안내방송 시작)'에 꽉 차도록 합니다.
+    const total = Math.max(1, (T - ANNOUNCE_AT * 1000 - startedAt) / 1000);
+    $('fill').style.width = Math.max(0, Math.min(100, (1 - (remaining - ANNOUNCE_AT) / total) * 100)) + '%';
 
     if (remaining <= 0) { finish(); return; }
     if (remaining > ANNOUNCE_AT && document.body.classList.contains('announcing')) leaveAnnounce();
